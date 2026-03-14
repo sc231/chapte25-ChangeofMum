@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的自畫像 · 粵拼學習</title>
+    <style>
+        /* ===== 全部樣式 - 字體使用香港學校常用楷體 ===== */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: '楷體', '標楷體', '华文楷体', 'KaiTi', 'Microsoft JhengHei', sans-serif;
+        }
+        body {
+            background: #fef9f0;
+            color: #3e2e23;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffffdd;
+            backdrop-filter: blur(3px);
+            border-radius: 40px 40px 20px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 2px solid #fbc4ab;
+        }
+        header {
+            background: #ffd9c5;
+            padding: 30px 30px 20px 30px;
+            text-align: center;
+            border-bottom: 5px solid #ffaa8a;
+        }
+        header h1 { 
+            font-size: 3rem; 
+            color: #b45f4b; 
+            text-shadow: 3px 3px 0 #ffe5d9; 
+            letter-spacing: 2px;
+            font-family: '楷體', '標楷體', '华文楷体', 'KaiTi', serif;
+        }
+        header p {
+            font-size: 1.3rem;
+            background: #fff3e9;
+            display: inline-block;
+            padding: 0.5rem 2rem;
+            border-radius: 50px;
+            margin-top: 10px;
+            color: #7a4e3d;
+            font-weight: bold;
+        }
+        .nav-lesson {
+            display: flex;
+            flex-wrap: wrap;
+            background: #fff0e7;
+            padding: 15px 20px;
+            gap: 8px;
+            border-bottom: 2px solid #ffb69b;
+            justify-content: center;
+        }
+        .lesson-btn {
+            background: white;
+            border: 2px solid #ffaa8a;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-weight: bold;
+            color: #a55a45;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 3px 0 #f8bfa6;
+        }
+        .lesson-btn.active {
+            background: #ffaa8a;
+            color: white;
+            border-color: #b45f4b;
+            box-shadow: 0 5px 0 #b45f4b;
+            transform: translateY(-2px);
+        }
+        .lesson-btn:hover { background: #ffd2be; }
+        .main-content { padding: 30px 30px 40px 30px; }
+        .lesson-panel { display: none; animation: fade 0.3s; }
+        .lesson-panel.active { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        h2 {
+            font-size: 2rem;
+            color: #b45f4b;
+            border-left: 15px solid #ffaa8a;
+            padding-left: 20px;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, #ffefe7, transparent);
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #9c6f5c;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card {
+            background: #fef9f5;
+            border-radius: 30px;
+            padding: 20px 25px;
+            box-shadow: 0 5px 15px rgba(251, 156, 118, 0.2);
+            border: 2px solid #ffcfbb;
+            margin-bottom: 25px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #fec7b0;
+            border-radius: 30px;
+            font-size: 1rem;
+            margin: 5px 0;
+            background: #fffcf9;
+        }
+        button {
+            background: #ffaa8a;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-bottom: 4px solid #b45f4b;
+            transition: 0.1s;
+            margin: 5px 0;
+        }
+        button:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+        .kwl-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .kwl-box {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            border: 2px solid #fec7b0;
+            min-height: 180px;
+        }
+        .kwl-box h4 {
+            background: #ffdccb;
+            display: inline-block;
+            padding: 4px 20px;
+            border-radius: 30px;
+            margin-bottom: 10px;
+        }
+        .draw-area {
+            border: 3px dashed #f9b599;
+            border-radius: 40px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fffcf5;
+            color: #ce9f89;
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+        .badge {
+            background: #a5d0b0;
+            padding: 5px 15px;
+            border-radius: 50px;
+            color: #1e532e;
+            font-weight: bold;
+            display: inline-block;
+            margin: 3px;
+            cursor: grab;
+            user-select: none;
+        }
+        .word-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .word-card {
+            background: #fff9e6;
+            border: 3px solid #ffb08e;
+            border-radius: 30px;
+            padding: 20px 15px;
+            width: 260px; 
+            text-align: center;
+            box-shadow: 0 8px 0 #dd9479;
+            transition: 0.1s;
+        }
+        .word-card .word-image {
+            width: 100%;
+            height: 80px;
+            background: #fbe6d9;
+            border-radius: 30px 30px 15px 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #b45f4b;
+            border: 2px dashed #ffaa8a;
+        }
+        .word-card .chinese {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #a5452a;
+            line-height: 1.2;
+        }
+        .word-card .jyutping {
+            font-size: 0.9rem;
+            color: #8f5e4b;
+            background: #ffefe6;
+            border-radius: 30px;
+            padding: 4px;
+            margin: 8px 0;
+        }
+        .word-card .english {   
+            font-size: 1rem;
+            background: #ffe3d6;
+            border-radius: 20px;
+            padding: 5px;
+            color: #4a3729;
+            margin: 6px 0;
+            font-style: italic;
+            border: 1px solid #ffaa8a;
+        }
+        .word-card .example {
+            font-size: 1rem;
+            background: #fff0dd;
+            border-radius: 20px;
+            padding: 8px;
+            color: #4e3a2b;
+            font-style: italic;
+            text-align: left;
+            margin-top: 8px;
+        }
+        .word-card .speaker {
+            margin-top: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: #ffe2d1;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ff784b;
+        }
+        .table-drag {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff7e7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .table-drag th {
+            background: #ffb699;
+            color: white;
+            padding: 12px;
+            font-size: 1.1rem;
+        }
+        .table-drag td {
+            border: 2px solid #ffc8b2;
+            padding: 15px;
+            text-align: center;
+            background: white;
+            min-height: 70px;
+        }
+        .dropzone-cell {
+            min-height: 60px;
+            background: #fff2e9;
+            border-radius: 20px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+        }
+        .writing-frame {
+            background: #fff7dd;
+            border-radius: 30px;
+            padding: 20px;
+            border: 2px solid #ffb08e;
+        }
+        .frame-sentence {
+            background: #ffe7dc;
+            border-radius: 40px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-size: 1.2rem;
+            border-left: 12px solid #b45f4b;
+        }
+        .quiz-mcq {
+            background: white;
+            border: 2px solid #fca87e;
+            border-radius: 60px;
+            padding: 12px 25px;
+            margin: 8px 0;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .quiz-mcq:hover { background: #ffe1d1; }
+        .quiz-mcq.correct {
+            background: #c5e0b4;
+            border-color: #4e9141;
+        }
+        .quiz-mcq.wrong {
+            background: #f9cfcf;
+            border-color: #c63e3e;
+        }
+        .feedback-zone {
+            background: #faeedb;
+            border-radius: 30px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .footer-note {
+            background: #ffeadf;
+            text-align: center;
+            padding: 15px;
+            font-size: 1rem;
+            color: #9b5f49;
+            border-top: 3px solid #ffb89d;
+        }
+        .dropzone {
+            min-height: 70px;
+            background: #fff2e9;
+            border-radius: 20px;
+            margin: 5px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .sorting-container {
+            display: flex;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .sentences-pool {
+            flex: 1;
+            min-width: 300px;
+            background: #fff2e9;
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px dashed #ffaa8a;
+        }
+        .slots-container {
+            flex: 1;
+            min-width: 300px;
+            background: #fff2e9;
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px solid #ffaa8a;
+        }
+        .sortable-sentence {
+            background: white;
+            border: 3px solid #ffaa8a;
+            border-radius: 50px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            font-size: 1.2rem;
+            cursor: grab;
+            box-shadow: 0 4px 0 #e0896a;
+        }
+        .slot-item {
+            background: #ffe8dd;
+            border: 3px dashed #ffaa8a;
+            border-radius: 50px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            min-height: 70px;
+        }
+        .slot-number {
+            background: #ffaa8a;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .fill-item {
+            background: white;
+            border-radius: 60px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-left: 15px solid #ffaa8a;
+        }
+        .fill-item select {
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 40px;
+            border: 2px solid #ffaa8a;
+            min-width: 120px;
+            margin: 0 8px;
+        }
+        .jyutping-note {
+            font-size: 0.9rem;
+            color: #a0664d;
+            background: #fff2e6;
+            border-radius: 20px;
+            padding: 5px 12px;
+            display: inline-block;
+        }
+        .padlet-btn {
+            display: inline-block;
+            background: #4a90e2;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 60px;
+            text-decoration: none;
+            border-bottom: 5px solid #2a4b7a;
+            margin-top: 10px;
+        }
+        .summary-box {
+            background: #e0f0e0;
+            border-radius: 30px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 3px solid #4b8c5c;
+        }
+        .summary-box h4 {
+            color: #1e4b2a;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        /* 確保所有文字使用楷體 */
+        p, div, span, h1, h2, h3, h4, button, .badge, .input-field, .quiz-mcq {
+            font-family: '楷體', '標楷體', '华文楷体', 'KaiTi', 'Microsoft JhengHei', serif;
+        }
+        .game-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .game-col {
+            flex: 1 1 300px;
+            background: #ffede3;
+            border-radius: 40px;
+            padding: 25px 20px;
+            border: 3px solid #ffaa8a;
+            margin: 0 auto;
+        }
+        .game-col h4 {
+            color: #b45f4b;
+            font-size: 1.8rem;
+            text-align: center;
+            border-bottom: 3px dotted #ffaa8a;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section-tag {
+            background: #ffaa8a;
+            color: white;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 40px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        /* 專名號：僅為特定人名、地名加上底線（稱謂不加） */
+        .proper-name {
+            text-decoration: underline;
+            text-decoration-style: solid;
+            text-decoration-color: currentColor;
+            text-underline-offset: 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>👩🏻 我的自畫像 · 粵拼學習</h1>
+        <p>✏️ 四年級中文 · 非華語學生 (香港語言學會粵語拼音)</p>
+    </header>
+
+    <div class="nav-lesson" id="lessonNav">
+        <div class="lesson-btn active" data-lesson="1">📘 詞語學習專區 + Wordwall</div>
+        <div class="lesson-btn" data-lesson="2">👀 觀察順序 + 詞語尋寶</div>
+        <div class="lesson-btn" data-lesson="3">⏳ 時間副詞 + 過渡句</div>
+        <div class="lesson-btn" data-lesson="4">🔄 首尾呼應</div>
+        <div class="lesson-btn" data-lesson="5">🎉 分享 + 小練筆</div>
+    </div>
+
+    <div class="main-content">
+        <!-- 第1課：認讀詞語 + 書寫詞語 不加任何修改提示 -->
+        <div id="lesson1" class="lesson-panel active">
+            <h2>📘 詞語學習專區 · 完整例句</h2>
+            
+            <!-- 認讀詞語區塊 -->
+            <div class="card">
+                <div class="section-tag">🔤 認讀詞語</div>
+                <div class="word-showcase">
+                    <div class="word-card"><div class="word-image">👩‍🎓</div><div class="chinese">端莊</div><div class="jyutping">dyun1 zong1</div><div class="english">dignified / proper</div><div class="example">例：媽媽的舉止十分端莊，大家都稱讚她。</div><div class="speaker" onclick="speakJyut('端莊')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">😊</div><div class="chinese">面龐</div><div class="jyutping">min6 pong4</div><div class="english">face / countenance</div><div class="example">例：她的面龐紅潤，看起來很健康。</div><div class="speaker" onclick="speakJyut('面龐')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">👁️</div><div class="chinese">睫毛</div><div class="jyutping">zit6 mou4</div><div class="english">eyelashes</div><div class="example">例：妹妹的睫毛又長又翹，像洋娃娃一樣。</div><div class="speaker" onclick="speakJyut('睫毛')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">✨</div><div class="chinese">閃爍</div><div class="jyutping">sim2 sok3</div><div class="english">twinkle / flicker</div><div class="example">例：夜空中的星星在閃爍，非常漂亮。</div><div class="speaker" onclick="speakJyut('閃爍')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🌈</div><div class="chinese">光彩</div><div class="jyutping">gwong1 coi2</div><div class="english">radiance / glory</div><div class="example">例：她的臉上散發着健康的光彩。</div><div class="speaker" onclick="speakJyut('光彩')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">👤</div><div class="chinese">模樣</div><div class="jyutping">mou4 joeng6</div><div class="english">appearance / look</div><div class="example">例：妹妹的模樣很可愛，像天使一樣。</div><div class="speaker" onclick="speakJyut('模樣')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">😵</div><div class="chinese">失神</div><div class="jyutping">sat1 san4</div><div class="english">distracted / absent-minded</div><div class="example">例：他上課時失神，沒聽到老師的問題。</div><div class="speaker" onclick="speakJyut('失神')">🔊</div></div>
+                </div>
+            </div>
+
+            <!-- 書寫詞語區塊 -->
+            <div class="card">
+                <div class="section-tag">✍️ 書寫詞語</div>
+                <div class="word-showcase">
+                    <div class="word-card"><div class="word-image">⚫</div><div class="chinese">烏黑</div><div class="jyutping">wu1 hak1</div><div class="english">jet-black</div><div class="example">例：媽媽有一頭烏黑的長髮，像瀑布一樣。</div><div class="speaker" onclick="speakJyut('烏黑')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🌳</div><div class="chinese">濃密</div><div class="jyutping">nung4 mat6</div><div class="english">thick / dense</div><div class="example">例：他的眉毛很濃密，看起來很有精神。</div><div class="speaker" onclick="speakJyut('濃密')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🌸</div><div class="chinese">秀麗</div><div class="jyutping">sau3 lai6</div><div class="english">elegant / pretty</div><div class="example">例：姐姐的字跡秀麗，老師常常稱讚她。</div><div class="speaker" onclick="speakJyut('秀麗')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🌱</div><div class="chinese">青春</div><div class="jyutping">cing1 ceon1</div><div class="english">youth</div><div class="example">例：青春是人生中最美好的時光。</div><div class="speaker" onclick="speakJyut('青春')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">💚</div><div class="chinese">羨慕</div><div class="jyutping">sin6 mou6</div><div class="english">envy</div><div class="example">例：我很羨慕妹妹可以整天玩耍。</div><div class="speaker" onclick="speakJyut('羨慕')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🗣️</div><div class="chinese">口吻</div><div class="jyutping">hau2 man5</div><div class="english">tone (of voice)</div><div class="example">例：媽媽用溫柔的口吻跟我說話。</div><div class="speaker" onclick="speakJyut('口吻')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🌿</div><div class="chinese">稀疏</div><div class="jyutping">hei1 so1</div><div class="english">sparse / thin</div><div class="example">例：他的頭髮變得稀疏，可見工作很辛苦。</div><div class="speaker" onclick="speakJyut('稀疏')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🔄</div><div class="chinese">夾雜</div><div class="jyutping">gaap3 zaap6</div><div class="english">mix / intermingle</div><div class="example">例：她的黑髮中夾雜着幾根白髮。</div><div class="speaker" onclick="speakJyut('夾雜')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">〰️</div><div class="chinese">皺紋</div><div class="jyutping">zau3 man4</div><div class="english">wrinkles</div><div class="example">例：奶奶的臉上佈滿了皺紋，那是歲月的痕跡。</div><div class="speaker" onclick="speakJyut('皺紋')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🎂</div><div class="chinese">年齡</div><div class="jyutping">nin4 ling4</div><div class="english">age</div><div class="example">例：媽媽的年齡是秘密，我不能告訴你。</div><div class="speaker" onclick="speakJyut('年齡')">🔊</div></div>
+                    <div class="word-card"><div class="word-image">🤝</div><div class="chinese">相稱</div><div class="jyutping">soeng1 cing3</div><div class="english">match / suit</div><div class="example">例：這件衣服和她的氣質很相稱。</div><div class="speaker" onclick="speakJyut('相稱')">🔊</div></div>
+                </div>
+            </div>
+            
+            <!-- Wordwall遊戲（置中） -->
+            <div class="game-wrapper">
+                <div class="game-col" style="text-align: center; max-width: 700px; margin: 0 auto;">
+                    <h4>🎮 WordWall 互動遊戲</h4>
+                    <p style="margin-bottom: 15px;">25.《媽媽的變化》供詞填充</p>
+                    <iframe style="width:100%; max-width:600px; height:380px; border: 3px solid #ffaa8a; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);" src="https://wordwall.net/embed/c965c03f29f246f68ee10d0ea80c494e?themeId=1&templateId=5&fontStackId=0" frameborder="0" allowfullscreen></iframe>
+                    <a href="https://wordwall.net/embed/c965c03f29f246f68ee10d0ea80c494e?themeId=1&templateId=5&fontStackId=0" target="_blank" style="display: inline-block; background: #ffaa8a; color: white; font-size: 1.5rem; font-weight: bold; padding: 15px 30px; border-radius: 60px; text-decoration: none; border-bottom: 5px solid #b45f4b; margin-top: 15px;">🎯 新分頁開啟遊戲</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2課：觀察順序 + 詞語尋寶 -->
+        <div id="lesson2" class="lesson-panel">
+            <h2>👀 觀察順序 · 詞語尋寶</h2>
+
+            <!-- 拖曳式詞語尋寶 -->
+            <div class="card">
+                <h3>📋 詞語尋寶：從前的媽媽 vs 現在</h3>
+                <table class="table-drag">
+                    <tr><th>時期</th><th>頭髮</th><th>面龐</th><th>眼睛</th></tr>
+                    <tr>
+                        <td>從前</td>
+                        <td><div class="dropzone-cell" id="dropPastHair" ondragover="dragOverCell(event)" ondrop="dropToCell(event, 'pastHair')"></div></td>
+                        <td><div class="dropzone-cell" id="dropPastFace" ondragover="dragOverCell(event)" ondrop="dropToCell(event, 'pastFace')"></div></td>
+                        <td><div class="dropzone-cell" id="dropPastEye" ondragover="dragOverCell(event)" ondrop="dropToCell(event, 'pastEye')"></div></td>
+                    </tr>
+                    <tr>
+                        <td>現在</td>
+                        <td><div class="dropzone-cell" id="dropNowHair" ondragover="dragOverCell(event)" ondrop="dropToCell(event, 'nowHair')"></div></td>
+                        <td><div class="dropzone-cell" id="dropNowFace" ondragover="dragOverCell(event)" ondrop="dropToCell(event, 'nowFace')"></div></td>
+                        <td><div class="dropzone-cell" id="dropNowEye" ondragover="dragOverCell(event)" ondrop="dropToCell(event, 'nowEye')"></div></td>
+                    </tr>
+                </table>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin:20px 0;" id="wordBankTreasure">
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre1">烏黑</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre2">濃密</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre3">秀麗</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre4">稀疏</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre5">皺紋</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre6">失神</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre7">夾雜</span>
+                    <span class="badge" draggable="true" ondragstart="dragWord(event)" id="wordTre8">青春</span>
+                </div>
+                <button onclick="checkTreasureDrop()">✅ 檢查拖曳</button>
+                <p id="treasureFeedback" class="feedback-zone"></p>
+            </div>
+
+            <!-- 觀察順序拖曳排序 + 總結 -->
+            <div class="card">
+                <h3>🔍 觀察順序 (整體 → 具體 → 性格)</h3>
+                <div id="sortingContainer" class="sorting-container">
+                    <div class="sentences-pool"><h4>📌 句子池</h4><div id="poolContainer"></div></div>
+                    <div class="slots-container"><h4>📋 按順序放到這裡</h4><div id="slotsContainer"></div></div>
+                </div>
+                <button onclick="checkDragSorting()">✅ 檢查排序</button>
+                <button class="sort-reset" onclick="resetDragSorting()">🔄 重設</button>
+                <p id="dragSortFeedback" class="feedback-zone"></p>
+                
+                <!-- 觀察順序總結 -->
+                <div class="summary-box" style="margin-top:20px;">
+                    <h4>📌 觀察順序總結</h4>
+                    <p style="font-size:1.2rem;">描寫人物時，可以按照「<strong>整體形象 → 具體外貌 → 性格特點</strong>」的順序，讓文章更有條理。</p>
+                    <p style="font-size:1.1rem; margin-top:10px;">例如：先寫身高、體型（整體），再寫頭髮、臉、眼睛（具體），最後寫性格、愛好。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3課：時間副詞分類 + 填充(隨機) + 過渡句總結 -->
+        <div id="lesson3" class="lesson-panel">
+            <h2>⏳ 時間副詞 · 過渡句</h2>
+            <!-- 時間副詞分類 -->
+            <div class="card">
+                <h3>📌 時間副詞分類</h3>
+                <p>把詞語拖到正確盒子：從前、現在、有時候、過去、如今、偶爾、依然、已經、有時、立刻、頓時、將要、馬上、剛剛、忽然、一向、始終、不時、一直</p>
+                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                    <div style="background:#ffe0d4; border-radius:30px; padding:15px; flex:1;">
+                        <div style="font-weight:bold;">🕰️ 過去</div>
+                        <div class="dropzone" style="min-height:70px;" id="dropPast"></div>
+                    </div>
+                    <div style="background:#ffe0d4; border-radius:30px; padding:15px; flex:1;">
+                        <div style="font-weight:bold;">⌛ 現在</div>
+                        <div class="dropzone" style="min-height:70px;" id="dropNow"></div>
+                    </div>
+                    <div style="background:#ffe0d4; border-radius:30px; padding:15px; flex:1;">
+                        <div style="font-weight:bold;">⏱️ 不固定/持續/將要</div>
+                        <div class="dropzone" style="min-height:70px;" id="dropAny"></div>
+                    </div>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin:15px 0;" id="timeWordsContainer">
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word1">從前</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word2">現在</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word3">有時候</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word4">過去</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word5">如今</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word6">偶爾</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word7">依然</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word8">已經</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word9">有時</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word10">立刻</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word11">頓時</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word12">將要</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word13">馬上</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word14">剛剛</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word15">忽然</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word16">一向</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word17">始終</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word18">不時</span>
+                    <span class="badge" draggable="true" ondragstart="drag(event)" id="word19">一直</span>
+                </div>
+                <button onclick="checkDrop()">📦 檢查分類</button>
+                <p id="dropFeedback" style="margin-top:10px;"></p>
+            </div>
+
+            <!-- 填充練習（選項完全隨機） -->
+            <div class="card fill-exercise">
+                <h3>✏️ 副詞填充練習</h3>
+                <div class="fill-item"><span>1. 媽媽從前頭髮烏黑，現在＿＿＿多了很多白髮。</span><select id="fill1"></select></div>
+                <div class="fill-item"><span>2. 妹妹＿＿＿跑進房間，嚇了我一跳。</span><select id="fill2"></select></div>
+                <div class="fill-item"><span>3. 天＿＿＿下雨了，我們要快點回家。</span><select id="fill3"></select></div>
+                <div class="fill-item"><span>4. 他＿＿＿很認真，從不偷懶。</span><select id="fill4"></select></div>
+                <div class="fill-item"><span>5. 聽到這個消息，大家＿＿＿鴉雀無聲。</span><select id="fill5"></select></div>
+                <div class="fill-item"><span>6. ＿＿＿我們還是好朋友，感情沒變。</span><select id="fill6"></select></div>
+                <div class="fill-item"><span>7. 他＿＿＿提醒我要帶雨傘，很貼心。</span><select id="fill7"></select></div>
+                <div class="fill-item"><span>8. 你＿＿＿出發，火車快要開了！</span><select id="fill8"></select></div>
+                <button onclick="checkFillExercise()">✅ 檢查填充答案</button>
+                <p id="fillFeedback" class="feedback-zone" style="margin-top:15px;"></p>
+            </div>
+
+            <!-- 過渡句總結 -->
+            <div class="card">
+                <h3>📌 過渡句的作用</h3>
+                <div class="summary-box" style="margin-top:0;">
+                    <h4>承上啟下 · 連接前後</h4>
+                    <p style="font-size:1.2rem;">過渡句就像一座橋，把「過去」和「現在」連起來，讓文章更流暢。</p>
+                    <p style="font-size:1.2rem; margin-top:10px;">例如：「可是，隨着時間流逝，媽媽慢慢變了。」</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4課：首尾呼應 + 五題選擇題 (第四題選項B已修正: 刪除「小美」,逗號改句號) + 獨立總結區 專名號僅保留人名地名 -->
+        <div id="lesson4" class="lesson-panel">
+            <h2>🔄 首尾呼應</h2>
+            <div class="card">
+                <h3>📖 課文開頭與結尾</h3>
+                <p><strong>開頭：</strong>我愛我的媽媽。我心疼我的媽媽。</p>
+                <p><strong>結尾：</strong>我愛我的媽媽。我心疼我的媽媽。</p>
+                <p style="background:#ffeadf; padding:10px; border-radius:30px;">這種寫法叫「首尾呼應」，讓文章結構完整。</p>
+            </div>
+
+            <!-- 首尾呼應總結（獨立區塊） -->
+            <div class="card summary-box">
+                <h4>📌 首尾呼應總結</h4>
+                <p>首尾呼應的作用是讓文章開頭和結尾互相關聯，<br>使主題更突出，給讀者留下深刻的印象。</p>
+            </div>
+
+            <!-- 五題選擇題 第四題選項B已修正: 刪除「小美」,逗號改句號；人名地名加專名號 -->
+            <div class="card">
+                <h3>🧐 首尾呼應選擇題</h3>
+                <!-- 題1 -->
+                <div id="mcqEcho1" style="margin:20px 0;">
+                    <p><strong>1. 下面哪個開頭和結尾運用了首尾呼應？</strong></p>
+                    <div class="quiz-mcq" onclick="selectEcho(this,1,0)">A. 開頭：今天天氣好。 結尾：明天希望也好。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,1,1)">B. 開頭：我的媽媽很溫柔。 結尾：我的媽媽真的很溫柔。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,1,2)">C. 開頭：我喜歡畫畫。 結尾：畫畫需要耐心。</div>
+                </div>
+                <!-- 題2 -->
+                <div id="mcqEcho2" style="margin:20px 0;">
+                    <p><strong>2. 下列哪個不是首尾呼應的好處？</strong></p>
+                    <div class="quiz-mcq" onclick="selectEcho(this,2,0)">A. 讓文章結構更完整</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,2,1)">B. 讓文章字數變多</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,2,2)">C. 加深讀者對主題的印象</div>
+                </div>
+                <!-- 題3 -->
+                <div id="mcqEcho3" style="margin:20px 0;">
+                    <p><strong>3. 如果文章開頭是「我有一個溫暖的家」，下面哪個結尾最能呼應？</strong></p>
+                    <div class="quiz-mcq" onclick="selectEcho(this,3,0)">A. 家裏有四個房間。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,3,1)">B. 這就是我溫暖的家，我愛它。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,3,2)">C. 家是在<span class="proper-name">香港</span>。</div>
+                </div>
+                <!-- 題4 修正: 刪除「小美」，逗號改句號。 -->
+                <div id="mcqEcho4" style="margin:20px 0;">
+                    <p><strong>4. 描寫好朋友的文章，開頭說「<span class="proper-name">小美</span>是我最好的朋友」，結尾怎樣呼應最好？</strong></p>
+                    <div class="quiz-mcq" onclick="selectEcho(this,4,0)">A. <span class="proper-name">小美</span>的眼睛很大。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,4,1)">B. 但願我們的友誼永遠不變。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,4,2)">C. <span class="proper-name">小美</span>的家很近。</div>
+                </div>
+                <!-- 題5 -->
+                <div id="mcqEcho5" style="margin:20px 0;">
+                    <p><strong>5. 《我的自畫像》開頭：「你認識我嗎？我叫<span class="proper-name">李明</span>，是個活潑的孩子。」哪個結尾最適合？</strong></p>
+                    <div class="quiz-mcq" onclick="selectEcho(this,5,0)">A. 現在你認識活潑的我了吧！</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,5,1)">B. 我最喜歡吃蘋果。</div>
+                    <div class="quiz-mcq" onclick="selectEcho(this,5,2)">C. 我今年十歲。</div>
+                </div>
+                <button onclick="checkEchoMCQ()">📌 檢查五題答案</button>
+                <p id="echoMCQFeedback" class="feedback-zone"></p>
+            </div>
+        </div>
+
+        <!-- 第5課：分享 + 小練筆(句式引導) + Padlet -->
+        <div id="lesson5" class="lesson-panel">
+            <h2>🎉 分享 · 我的自畫像</h2>
+            <div class="card writing-frame">
+                <h3>📝 《我的自畫像》寫作框架</h3>
+                <div class="frame-sentence">✨ 開頭：我叫______，今年______歲。我是一個______(形容詞)的孩子。</div>
+                <div class="frame-sentence">👀 外貌：我的頭髮______，像______。我的臉______，眼睛______。</div>
+                <div class="frame-sentence">💖 性格：我喜歡______，因為______。我也很______。</div>
+                <div class="frame-sentence">🌱 結尾：這就是我，一個______的我。</div>
+                <textarea class="input-field" rows="6" placeholder="按照上面句式寫一段自畫像..."></textarea>
+                <button onclick="alert('你的草稿已儲存')">💾 儲存草稿</button>
+            </div>
+            
+            <div class="card" style="text-align:center;">
+                <a href="https://padlet.com/sc373/padlet-mhcirm3ukq5cr4km" target="_blank" class="padlet-btn">📌 前往 Padlet 展示牆</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        四年級中文 · 非華語學生
+    </div>
+</div>
+
+<script>
+    // 課堂切換
+    const btns = document.querySelectorAll('.lesson-btn');
+    const panels = document.querySelectorAll('.lesson-panel');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            panels.forEach(p => p.classList.remove('active'));
+            document.getElementById('lesson' + btn.dataset.lesson).classList.add('active');
+        });
+    });
+
+    // 發音
+    window.speakJyut = function(text) { 
+        const utterance = new SpeechSynthesisUtterance(text); 
+        utterance.lang = 'zh-HK'; 
+        utterance.rate = 0.6; 
+        window.speechSynthesis.speak(utterance); 
+    };
+
+    // ---------- 詞語尋寶拖曳 ----------
+    window.dragWord = function(ev) { ev.dataTransfer.setData("text", ev.target.id); };
+    window.dragOverCell = function(ev) { ev.preventDefault(); };
+    window.dropToCell = function(ev, cellId) {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData("text");
+        const dragged = document.getElementById(data);
+        if (!dragged) return;
+        const clone = dragged.cloneNode(true);
+        clone.style.display = 'inline-block';
+        clone.draggable = false;
+        clone.classList.add('badge');
+        ev.target.appendChild(clone);
+        dragged.remove();
+    };
+    window.checkTreasureDrop = function() {
+        document.getElementById('treasureFeedback').innerText = '👩‍🏫 檢查完成！參考答案：從前(烏黑、濃密、秀麗)；現在(稀疏、皺紋、失神)';
+    };
+
+    // ---------- 時間副詞分類拖曳 ----------
+    window.drag = function(ev) { ev.dataTransfer.setData("text", ev.target.id); };
+    document.querySelectorAll('.dropzone').forEach(z => {
+        z.addEventListener('dragover', (e) => e.preventDefault());
+        z.addEventListener('drop', (e) => {
+            e.preventDefault(); 
+            const data = e.dataTransfer.getData("text"); 
+            const draggedEl = document.getElementById(data);
+            if (draggedEl) { 
+                const clone = draggedEl.cloneNode(true); 
+                clone.style.display = 'inline-block'; 
+                clone.draggable = false; 
+                clone.classList.add('badge'); 
+                e.target.appendChild(clone); 
+                draggedEl.remove(); 
+            }
+        });
+    });
+    window.checkDrop = function() { document.getElementById('dropFeedback').innerText = '✔ 已分類 (可參考提示)'; };
+
+    // ---------- 排序句子 ----------
+    const sortSentences = ['我的個子高高的，站在人群中很顯眼。','我的頭髮長長的，常常紮成一條馬尾。','我是一個溫柔的人，總是面帶微笑。'];
+    const correctOrder = [0,1,2]; let poolSentences = [], slotContents = [];
+    function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+    function initDragSorting() { poolSentences = shuffleArray([...Array(sortSentences.length).keys()]); slotContents = Array(sortSentences.length).fill(null); updateDragSortingDisplay(); }
+    function updateDragSortingDisplay() {
+        const poolContainer = document.getElementById('poolContainer'), slotsContainer = document.getElementById('slotsContainer');
+        if (!poolContainer || !slotsContainer) return;
+        let poolHtml = ''; poolSentences.forEach((sentenceIndex, i) => { poolHtml += `<div class="sortable-sentence" draggable="true" ondragstart="dragSentenceStart(event)" data-sentence-index="${sentenceIndex}" data-pool-index="${i}">${sortSentences[sentenceIndex]}</div>`; });
+        poolContainer.innerHTML = poolHtml || '<p style="color: #ce9f89;">✨ 所有句子都放好了！</p>';
+        let slotsHtml = '';
+        for (let i = 0; i < slotContents.length; i++) { const content = slotContents[i]; slotsHtml += `<div class="slot-item ${content !== null ? 'filled' : ''}" ondragover="dragOverSlot(event)" ondrop="dropToSlot(event, ${i})" data-slot-index="${i}"><span class="slot-number">${i+1}</span><div class="slot-content">${content !== null ? `<span class="filled-text">${sortSentences[content]}</span>` : `<span class="slot-placeholder">拖曳句子到這裡</span>`}</div></div>`; }
+        slotsContainer.innerHTML = slotsHtml;
+    }
+    let draggedSentenceIndex = null, draggedPoolIndex = null;
+    window.dragSentenceStart = function(ev) { const el = ev.target; draggedSentenceIndex = parseInt(el.dataset.sentenceIndex); draggedPoolIndex = parseInt(el.dataset.poolIndex); ev.dataTransfer.setData('text/plain', draggedSentenceIndex); };
+    window.dragOverSlot = function(ev) { ev.preventDefault(); };
+    window.dropToSlot = function(ev, slotIndex) { ev.preventDefault(); if (draggedSentenceIndex === null) return; if (slotContents[slotIndex] !== null) { alert('這個空格已經有句子了！'); return; } poolSentences.splice(draggedPoolIndex, 1); slotContents[slotIndex] = draggedSentenceIndex; updateDragSortingDisplay(); draggedSentenceIndex = null; draggedPoolIndex = null; };
+    window.checkDragSorting = function() {
+        let isCorrect = true; for (let i=0;i<correctOrder.length;i++) if (slotContents[i] !== correctOrder[i]) isCorrect = false; if (poolSentences.length>0) isCorrect = false;
+        document.getElementById('dragSortFeedback').innerHTML = isCorrect ? '✅ 非常好！順序正確 (整體→外貌→性格)' : '❌ 順序不對，再試試';
+    };
+    window.resetDragSorting = function() { initDragSorting(); document.getElementById('dragSortFeedback').innerHTML = ''; };
+    initDragSorting();
+
+    // ---------- 填充題 ----------
+    const fillData = [
+        { correct: '已經', candidates: ['已經','忽然','一直','將要'] },
+        { correct: '忽然', candidates: ['忽然','一向','始終','不時'] },
+        { correct: '將要', candidates: ['將要','剛剛','頓時','一直'] },
+        { correct: '一向', candidates: ['一向','立刻','有時','將要'] },
+        { correct: '頓時', candidates: ['頓時','馬上','依然','已經'] },
+        { correct: '始終', candidates: ['始終','將要','剛剛','不時'] },
+        { correct: '不時', candidates: ['不時','忽然','已經','從前'] },
+        { correct: '馬上', candidates: ['馬上','有時候','依然','如今'] }
+    ];
+    function shuffleArrayFull(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+    function initFillSelects() {
+        fillData.forEach((item, index) => {
+            const selectEl = document.getElementById(`fill${index+1}`);
+            if (!selectEl) return;
+            const allOptions = [item.correct, ...item.candidates.filter(opt => opt !== item.correct)];
+            const shuffled = shuffleArrayFull([...allOptions]);
+            let optionsHtml = '<option value="">請選擇</option>';
+            shuffled.forEach(opt => { optionsHtml += `<option value="${opt}">${opt}</option>`; });
+            selectEl.innerHTML = optionsHtml;
+        });
+    }
+    initFillSelects();
+    window.checkFillExercise = function() {
+        const correctAnswers = fillData.map(d => d.correct);
+        let correct = 0;
+        for (let i = 0; i < 8; i++) { const sel = document.getElementById(`fill${i+1}`); if (sel && sel.value === correctAnswers[i]) correct++; }
+        document.getElementById('fillFeedback').innerText = `✅ 你答對了 ${correct} / 8 題！`;
+    };
+
+    // ---------- 首尾呼應五題選擇題 ----------
+    let selectedEcho = [null, null, null, null, null];
+    window.selectEcho = function(el, qNum, optIdx) {
+        const parent = document.getElementById(`mcqEcho${qNum}`);
+        if (parent) { Array.from(parent.querySelectorAll('.quiz-mcq')).forEach(c => c.classList.remove('correct', 'wrong')); }
+        el.classList.add('correct');
+        selectedEcho[qNum - 1] = optIdx;
+    };
+    window.checkEchoMCQ = function() {
+        // 正確答案索引: 題1:B(1), 題2:B(1), 題3:B(1), 題4:B(1), 題5:A(0)
+        const correct = [1, 1, 1, 1, 0]; 
+        let score = 0; let fb = '';
+        for (let i = 0; i < 5; i++) {
+            if (selectedEcho[i] === correct[i]) score++;
+            else fb += `第${i+1}題正確答案: ${String.fromCharCode(65+correct[i])}； `;
+        }
+        document.getElementById('echoMCQFeedback').innerHTML = `✅ 答對 ${score}/5 題。 ${fb}`;
+    };
+</script>
+</body>
+</html>
